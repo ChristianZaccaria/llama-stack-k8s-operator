@@ -1030,6 +1030,11 @@ func (r *LlamaStackDistributionReconciler) updateServiceStatus(ctx context.Conte
 		SetServiceReadyCondition(&instance.Status, false, fmt.Sprintf("Failed to get Service: %v", err))
 		return
 	}
+
+	// Set the service endpoint URL in the status
+	serviceURL := r.getServerURL(instance, "")
+	instance.Status.ServiceEndpoint = serviceURL.String()
+
 	SetServiceReadyCondition(&instance.Status, true, MessageServiceReady)
 }
 
