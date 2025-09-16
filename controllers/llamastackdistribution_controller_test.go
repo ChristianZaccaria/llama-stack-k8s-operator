@@ -452,6 +452,12 @@ func TestLlamaStackProviderAndVersionInfo(t *testing.T) {
 	require.Equal(t, expectedLlamaStackVersionInfo,
 		updatedInstance.Status.Version.LlamaStackServerVersion,
 		"server version should match the mock response")
+
+	// validate service endpoint
+	expectedServiceEndpoint := fmt.Sprintf("http://%s-service.%s.svc.cluster.local:%d",
+		instance.Name, instance.Namespace, llamav1alpha1.DefaultServerPort)
+	require.Equal(t, expectedServiceEndpoint, updatedInstance.Status.ServiceEndpoint,
+		"service endpoint should be set to the internal Kubernetes service URL")
 }
 
 func TestNetworkPolicyConfiguration(t *testing.T) {
